@@ -28,8 +28,8 @@ export class UsersService {
     return await this.repository.create(userWithHashedPassword);
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findAll() {
+    return await this.repository.findAll();
   }
 
   findOne(id: number) {

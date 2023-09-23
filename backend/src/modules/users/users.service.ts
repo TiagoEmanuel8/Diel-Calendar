@@ -5,6 +5,7 @@ import { UserRepository } from './repositories/users.repository';
 import { PasswordHashService } from 'src/common/encryption/password-hash';
 import { ConflictError } from 'src/common/errors/types/ConflictError';
 import { NotFoundError } from 'src/common/errors/types/NotFoundError';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class UsersService {
@@ -45,7 +46,17 @@ export class UsersService {
     return await this.repository.update(id, updateUserDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: number): Promise<void> {
+    try {
+      await this.repository.remove(id);
+    } catch (error) {
+      if (
+        error instanceof Prisma.PrismaClientKnownRequestError &&
+        error.code === 'P2025'
+      ) {
+        throw new NotFoundError(`User ${id} is not found`);
+      }
+      throw error;
+    }
   }
 }

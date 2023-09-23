@@ -4,6 +4,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { UserRepository } from './repositories/users.repository';
 import { PasswordHashService } from 'src/common/encryption/password-hash';
 import { ConflictError } from 'src/common/errors/types/ConflictError';
+import { NotFoundError } from 'src/common/errors/types/NotFoundError';
 
 @Injectable()
 export class UsersService {
@@ -32,12 +33,16 @@ export class UsersService {
     return await this.repository.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: number) {
+    const user = await this.repository.findOne(id);
+    if (!user) throw new NotFoundError(`User ${id} is not found`);
+    return user;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    const user = await this.repository.findOne(id);
+    if (!user) throw new NotFoundError(`User ${id} is not found`);
+    return await this.repository.update(id, updateUserDto);
   }
 
   remove(id: number) {

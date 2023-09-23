@@ -14,20 +14,18 @@ const schema = yup.object().shape({
     .min(6, "Senha deve ter no mínimo 6 caracteres")
     .required("Senha é obrigatória"),
   mobileNumber: yup.string()
-    .matches(/^(\+\d{1,3}[- ]?)?\d{11}$/, "Número de celular inválido")
     .required("Número de celular é obrigatório")
 });
 
 const Register: React.FC = () => {
 
-  // Use yupResolver para integrar yup ao useForm
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schema)
   });
 
   const onSubmit = (data: Record<string, any>) => {
     console.log(data);
-    // Faça a chamada à API aqui
+    // ligar com o backend
   };
 
   return (
@@ -54,6 +52,7 @@ const Register: React.FC = () => {
         <FormInput
           label="Número de celular"
           type="tel"
+          mask="(99) 99999-9999"
           error={errors.mobileNumber}
           {...register("mobileNumber")}
         />

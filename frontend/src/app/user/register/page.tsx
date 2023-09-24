@@ -1,33 +1,47 @@
 "use client"
 
-import {
-  Flex, Box, Stack, Button, Heading, Text, useColorModeValue, useToast, Link
-} from "@chakra-ui/react";
 import React, { useState } from 'react';
+import {
+  Flex,
+  Box,
+  Stack,
+  Button,
+  Heading,
+  Text,
+  useColorModeValue,
+  useToast,
+  Link
+} from "@chakra-ui/react";
+import {
+  InputName,
+  InputEmail,
+  InputPassword,
+  InputPhoneNumber
+} from '@/components/forms';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-
-import { InputName, InputEmail, InputPassword, InputPhoneNumber } from '@/components/forms';
-
+import { userService } from '@/api/userAPI';
+import { useRouter } from 'next/navigation';
 
 interface IUserFormData {
   name: string;
   email: string;
   password: string;
-  phoneNumber: string;
+  mobileNumber: string;
 }
 
 const schema = yup.object({
   name: yup.string().required('Campo obrigatório'),
   email: yup.string().required('Campo obrigatório'),
   password: yup.string().required('Campo obrigatório'),
-  phoneNumber: yup.string().required('Campo obrigatório'),
+  mobileNumber: yup.string().required('Campo obrigatório'),
 });
 
 export default function Register() {
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
+  const router = useRouter();
 
   const {
     register,
@@ -38,7 +52,29 @@ export default function Register() {
   });
 
   const onSubmit = async (data: IUserFormData) => {
-    console.log(data);
+    setIsLoading(true);
+    try {
+      console.log(data)
+      await userService.createUser(data);
+      toast({
+        title: "Sucesso",
+        description: "Usuário criado com sucesso",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+      router.push('/');
+    } catch (error: any) {
+      toast({
+        title: "Erro",
+        description: error.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -68,7 +104,7 @@ export default function Register() {
               <InputName register={register('name')} error={errors.name?.message} />
               <InputEmail register={register('email')} error={errors.email?.message} />
               <InputPassword register={register('password')} error={errors.password?.message} />
-              <InputPhoneNumber register={register('phoneNumber')} error={errors.phoneNumber?.message} />
+              <InputPhoneNumber register={register('mobileNumber')} error={errors.mobileNumber?.message} />
               <Stack spacing={10} pt={2}>
                 <Button
                   type='submit'
@@ -85,7 +121,7 @@ export default function Register() {
               </Stack>
               <Stack pt={6}>
                 <Text align={"center"}>
-                  Possui conta? <Link color={"blue.400"} href="/login">Login</Link>
+                  Possui conta? <Link color={"blue.400"} href="/">Login</Link>
                 </Text>
               </Stack>
             </Stack>

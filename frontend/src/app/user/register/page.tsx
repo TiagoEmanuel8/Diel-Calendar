@@ -1,67 +1,97 @@
 "use client"
 
-import React from 'react';
-import { useForm } from "react-hook-form";
+import {
+  Flex, Box, Stack, Button, Heading, Text, useColorModeValue, useToast, Link
+} from "@chakra-ui/react";
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from "yup";
-import FormInput from "@/components/forms/UserFormInput";
+import * as yup from 'yup';
 
-// Define as validações usando yup
-const schema = yup.object().shape({
-  name: yup.string().required("Nome é obrigatório"),
-  email: yup.string().email("E-mail inválido").required("E-mail é obrigatório"),
-  password: yup.string()
-    .min(6, "Senha deve ter no mínimo 6 caracteres")
-    .required("Senha é obrigatória"),
-  mobileNumber: yup.string()
-    .required("Número de celular é obrigatório")
+import { InputName, InputEmail, InputPassword, InputPhoneNumber } from '@/components/forms';
+
+
+interface IUserFormData {
+  name: string;
+  email: string;
+  password: string;
+  phoneNumber: string;
+}
+
+const schema = yup.object({
+  name: yup.string().required('Campo obrigatório'),
+  email: yup.string().required('Campo obrigatório'),
+  password: yup.string().required('Campo obrigatório'),
+  phoneNumber: yup.string().required('Campo obrigatório'),
 });
 
-const Register: React.FC = () => {
+export default function Register() {
+  const [isLoading, setIsLoading] = useState(false);
+  const toast = useToast();
 
-  const { register, handleSubmit, formState: { errors } } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<IUserFormData>({
     resolver: yupResolver(schema)
   });
 
-  const onSubmit = (data: Record<string, any>) => {
+  const onSubmit = async (data: IUserFormData) => {
     console.log(data);
-    // ligar com o backend
   };
 
   return (
-    <div className="p-4">
-      {/* <NavBar /> */}
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <FormInput 
-          label="Nome"
-          error={errors.name}
-          {...register("name")} 
-        />
-        <FormInput 
-          label="E-mail" 
-          type="email"
-          error={errors.email}
-          {...register("email")} 
-        />
-        <FormInput
-          label="Senha"
-          type="password"
-          error={errors.password}
-          {...register("password")}
-        />
-        <FormInput
-          label="Número de celular"
-          type="tel"
-          mask="(99) 99999-9999"
-          error={errors.mobileNumber}
-          {...register("mobileNumber")}
-        />
-        <button type="submit" className="mt-4 bg-blue-500 text-white p-2">
-          Registrar
-        </button>
+    <Flex
+      minH={"100vh"}
+      align={"center"}
+      justify={"center"}
+      bg={useColorModeValue("gray.50", "gray.800")}
+    >
+      <form action="" autoComplete='off' onSubmit={handleSubmit(onSubmit)}>
+        <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
+          <Stack align={"center"}>
+            <Heading fontSize={"4xl"} textAlign={"center"}>
+              Novo por aqui?
+            </Heading>
+            <Text fontSize={"lg"} color={"gray.600"}>
+              Cadastre-se abaixo e comece a planejar suas férias
+            </Text>
+          </Stack>
+          <Box
+            rounded={"lg"}
+            bg={useColorModeValue("white", "gray.700")}
+            boxShadow={"lg"}
+            p={8}
+          >
+            <Stack spacing={4}>
+              <InputName register={register('name')} error={errors.name?.message} />
+              <InputEmail register={register('email')} error={errors.email?.message} />
+              <InputPassword register={register('password')} error={errors.password?.message} />
+              <InputPhoneNumber register={register('phoneNumber')} error={errors.phoneNumber?.message} />
+              <Stack spacing={10} pt={2}>
+                <Button
+                  type='submit'
+                  size="lg"
+                  bg={"blue.400"}
+                  color={"white"}
+                  _hover={{
+                    bg: "blue.500",
+                  }}
+                  isLoading={isLoading}
+                >
+                  Cadastrar
+                </Button>
+              </Stack>
+              <Stack pt={6}>
+                <Text align={"center"}>
+                  Possui conta? <Link color={"blue.400"} href="/login">Login</Link>
+                </Text>
+              </Stack>
+            </Stack>
+          </Box>
+        </Stack>
       </form>
-    </div>
+    </Flex>
   );
 }
-
-export default Register;

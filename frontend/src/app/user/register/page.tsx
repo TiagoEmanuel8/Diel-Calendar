@@ -2,27 +2,14 @@
 
 import React, { useState } from 'react';
 import {
-  Flex,
-  Box,
-  Stack,
-  Button,
-  Heading,
-  Text,
-  useColorModeValue,
-  useToast,
-  Link
+  Flex, Box, Stack, Button, Heading, Text, useColorModeValue, useToast, Link
 } from "@chakra-ui/react";
-import {
-  InputName,
-  InputEmail,
-  InputPassword,
-  InputPhoneNumber
-} from '@/components/forms';
+import { InputName, InputEmail, InputPassword, InputPhoneNumber } from '@/components/forms';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { userService } from '@/api/userAPI';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/router';
+import { handleUserRegistration } from '@/handlers/userHandlers';
 
 interface IUserFormData {
   name: string;
@@ -53,28 +40,8 @@ export default function Register() {
 
   const onSubmit = async (data: IUserFormData) => {
     setIsLoading(true);
-    try {
-      console.log(data)
-      await userService.createUser(data);
-      toast({
-        title: "Sucesso",
-        description: "Usuário criado com sucesso",
-        status: "success",
-        duration: 5000,
-        isClosable: true,
-      });
-      router.push('/');
-    } catch (error: any) {
-      toast({
-        title: "Erro",
-        description: error.message,
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
-    } finally {
-      setIsLoading(false);
-    }
+    await handleUserRegistration(data, toast, router);
+    setIsLoading(false);
   };
 
   return (

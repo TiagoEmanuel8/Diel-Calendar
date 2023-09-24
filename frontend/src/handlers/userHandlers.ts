@@ -1,8 +1,9 @@
 import { userService } from '@/services/userAPI';
 import { UseToastOptions } from "@chakra-ui/react";
+import { IUserFormData } from '@/types/user';
 
 export const handleUserRegistration = async (
-  data: any,
+  data: IUserFormData,
   toast: (options: UseToastOptions) => void,
   router: any
 ) => {

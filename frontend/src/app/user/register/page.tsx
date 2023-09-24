@@ -10,13 +10,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useRouter } from 'next/router';
 import { handleUserRegistration } from '@/handlers/userHandlers';
+import { IUserFormData } from '@/types/user';
 
-interface IUserFormData {
-  name: string;
-  email: string;
-  password: string;
-  mobileNumber: string;
-}
 
 const schema = yup.object({
   name: yup.string().required('Campo obrigatório'),
@@ -58,7 +53,7 @@ export default function Register() {
               Novo por aqui?
             </Heading>
             <Text fontSize={"lg"} color={"gray.600"}>
-              Cadastre-se abaixo e comece a planejar suas férias
+              Cadastre-se abaixo e comece planejar suas atividades
             </Text>
           </Stack>
           <Box

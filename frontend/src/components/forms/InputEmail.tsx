@@ -3,9 +3,8 @@ import { FormControl, FormLabel, Input, FormErrorMessage } from "@chakra-ui/reac
 import { UseFormRegisterReturn } from 'react-hook-form';
 
 interface InputEmailProps {
-  register: any;
-  // register: UseFormRegisterReturn;
-
+  // register: any;
+  register: UseFormRegisterReturn;
   error?: string;
 }
 
@@ -17,7 +16,7 @@ export const InputEmail: React.FC<InputEmailProps> = ({ register, error }) => (
       outline='none'
       focusBorderColor='gray.600'
       placeholder='exemplo@email.com'
-      {...register('email')}
+      {...register}
     />
     <FormErrorMessage>
         {error}

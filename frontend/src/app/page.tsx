@@ -51,8 +51,8 @@ export default function Home() {
         >
           <form onSubmit={handleSubmit(onSubmit)}>
             <Stack spacing={4}>
-              <InputEmail register={register} error={errors.email?.message} />
-              <InputPassword register={register} error={errors.password?.message} />
+              <InputEmail register={register('email')} error={errors.email?.message} />
+              <InputPassword register={register('password')} error={errors.password?.message} />
 
               <Stack spacing={10}>
                 <Stack

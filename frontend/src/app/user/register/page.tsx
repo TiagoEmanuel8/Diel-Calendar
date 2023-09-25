@@ -8,10 +8,9 @@ import { InputName, InputEmail, InputPassword, InputPhoneNumber } from '@/compon
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { handleUserRegistration } from '@/handlers/userHandlers';
 import { IUserFormData } from '@/types/user';
-
 
 const schema = yup.object({
   name: yup.string().required('Campo obrigatório'),

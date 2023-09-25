@@ -1,35 +1,14 @@
 "use client"
 
-import {
-  Flex,
-  Box,
-  FormControl,
-  FormLabel,
-  Input,
-  Stack,
-  Button,
-  Heading,
-  useColorModeValue,
-  InputGroup,
-  InputRightElement,
-  useToast,
-  FormErrorMessage
-} from "@chakra-ui/react"
-import { useState } from "react"
-import { yupResolver } from '@hookform/resolvers/yup';
+import { Flex, Box, Stack, Button, Heading, useColorModeValue } from "@chakra-ui/react";
+import { InputEmail, InputPassword } from '@/components/forms';
 import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import { loginService } from '@/services/loginAPI';
-import router from 'next/router';
-import jwt from 'jsonwebtoken';
-
-interface ILoginFormData {
-  email: string,
-  password: string,
-  handleSubmit: () => void,
-  onSubmit: () => void,
-}
+import { onSubmitHandler } from '@/handlers/loginHandlers';
+import { ILoginFormData } from '@/types/login';
+import { useRouter } from 'next/navigation';
+import { useToast } from "@chakra-ui/react";
 
 const schema = yup.object({
   email: yup.string().required('Campo obrigatório'),
@@ -37,10 +16,9 @@ const schema = yup.object({
 });
 
 export default function Home() {
-  const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
-  
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -49,39 +27,9 @@ export default function Home() {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = async (data: ILoginFormData) => {
-    setIsLoading(true);
-    try {
-      const token = await loginService.login(data);
-
-      localStorage.setItem('token', token);
-
-      const decodedToken: any = jwt.decode(token);     
-
-      if (decodedToken?.type === 'user') {
-        window.location.href = '/user/dashboard';
-      } else if (decodedToken?.type === 'adm') {
-        window.location.href = '/admin/dashboard';
-      }
-
-      toast({
-        title: "Sucesso",
-        description: "Sucesso",
-        status: "success",
-        duration: 5000,
-        isClosable: true,
-      });
-    } catch (error: any) {
-      toast({
-        title: "Erro",
-        description: error.message,
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
-    } finally {
-      setIsLoading(false);
-    }
+  const onSubmit = (data: ILoginFormData) => {
+    console.log(data)
+    onSubmitHandler(data, toast, router);
   };
 
   return (
@@ -102,75 +50,36 @@ export default function Home() {
           p={8}
         >
           <form onSubmit={handleSubmit(onSubmit)}>
-          <Stack spacing={4}>
-          <FormControl isInvalid={!!errors.email} isRequired>
-              <FormLabel>Email</FormLabel>
-              <Input
-                type="email"
-                outline='none'
-                focusBorderColor='gray.600'
-                placeholder='Digite seu email'
-                {...register('email')}
-              />
-                <FormErrorMessage>
-                  {errors.email?.message}
-                </FormErrorMessage>
-            </FormControl>
+            <Stack spacing={4}>
+              <InputEmail register={register} error={errors.email?.message} />
+              <InputPassword register={register} error={errors.password?.message} />
 
-            <FormControl isInvalid={!!errors.password} isRequired>
-                <FormLabel>Senha</FormLabel>
-                <InputGroup>
-                  <Input
-                    type={showPassword ? "text" : "password"}
-                    outline='none'
-                    focusBorderColor='gray.600'
-                    placeholder='exemplo@email.com'
-                    {...register('password')}
-                  />
-                  <InputRightElement h={"full"}>
-                    <Button
-                      variant={"ghost"}
-                      onClick={() =>
-                        setShowPassword((showPassword) => !showPassword)
-                      }
-                    >
-                      {showPassword ? <ViewIcon /> : <ViewOffIcon />}
-                    </Button>
-                  </InputRightElement>
-                </InputGroup>
-              </FormControl>
-              <FormErrorMessage>
-                {errors.password?.message}
-              </FormErrorMessage>
-
-            <Stack spacing={10}>
-              <Stack
-                direction={{ base: "column", sm: "row" }}
-                align={"start"}
-                justify={"center"}
-              >
-              <Button as="a" color={"blue.400"} href="/user/register" variant={"link"}>
-              Criar conta
-            </Button>
+              <Stack spacing={10}>
+                <Stack
+                  direction={{ base: "column", sm: "row" }}
+                  align={"start"}
+                  justify={"center"}
+                >
+                  <Button as="a" color={"blue.400"} href="/user/register" variant={"link"}>
+                    Criar conta
+                  </Button>
+                </Stack>
+                <Button
+                  type='submit'
+                  width='full'
+                  bg={"blue.400"}
+                  color={"white"}
+                  _hover={{
+                    bg: "blue.500",
+                  }}
+                >
+                  Login
+                </Button>
               </Stack>
-              <Button
-                type='submit'
-                width='full'
-                bg={"blue.400"}
-                color={"white"}
-                _hover={{
-                  bg: "blue.500",
-                }}
-                isLoading={isLoading}
-              >
-                Login
-              </Button>
             </Stack>
-          </Stack>
           </form>
         </Box>
       </Stack>
     </Flex>
   )
 }
-

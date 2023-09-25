@@ -4,7 +4,8 @@ import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { useState } from 'react';
 
 interface InputProps {
-  register: UseFormRegisterReturn;
+  // register: UseFormRegisterReturn;
+  register: any;
   error?: string;
 }
 
@@ -20,7 +21,7 @@ export const InputPassword: React.FC<InputProps> = ({ register, error }) => {
           outline='none'
           focusBorderColor='gray.600'
           placeholder='digite sua senha'
-          {...register}
+          {...register('password')}
         />
         <InputRightElement h={"full"}>
           <Button

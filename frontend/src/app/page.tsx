@@ -1,7 +1,7 @@
 "use client"
 
 import { Flex, Box, Stack, Button, Heading, useColorModeValue } from "@chakra-ui/react";
-import { InputEmail, InputPassword } from '@/components/forms';
+import { InputEmail, InputPassword } from '@/components/formUser';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';

@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import {
   Flex, Box, Stack, Button, Heading, Text, useColorModeValue, useToast, Link
 } from "@chakra-ui/react";
-import { InputName, InputEmail, InputPassword, InputPhoneNumber } from '@/components/forms';
+import { InputName, InputEmail, InputPassword, InputPhoneNumber } from '@/components/formUser';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';

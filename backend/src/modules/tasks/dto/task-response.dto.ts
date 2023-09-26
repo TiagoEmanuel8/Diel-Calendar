@@ -1,11 +1,3 @@
-export class UserDto {
-  id: number;
-  name: string;
-  email: string;
-  mobileNumber: string;
-  task?: TaskDto;
-}
-
 export class TaskDto {
   id?: number;
   title: string;
@@ -14,4 +6,5 @@ export class TaskDto {
   duration: string;
   tags: string;
   times: string;
+  userId: number;
 }

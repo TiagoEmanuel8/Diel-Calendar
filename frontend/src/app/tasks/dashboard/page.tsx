@@ -1,7 +1,7 @@
 "use client"
 
-import { Flex, Text, Box, Button, useToast, VStack, Textarea, Select, Input, FormControl, FormLabel } from '@chakra-ui/react';
-import { InputTitle, InputDescription, inputTimes, InputTags, InputDuration, SelectState } from '@/components/formTask';
+import { Flex, Box, Button, useToast, VStack } from '@chakra-ui/react';
+import { InputTitle, InputDescription, InputTimes, SelectTags, InputDuration, SelectState } from '@/components/formTask';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import { handleTaskRegistration } from '@/handlers/taskHandler';
@@ -13,8 +13,8 @@ const CalendarPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
 
-  const onSubmit = async (data: any) => {
-    console.log(data);
+  const onSubmit = async (data: any, event: any) => {
+    event.preventDefault();
     setIsLoading(true);
     await handleTaskRegistration(data, toast);
     setIsLoading(false);
@@ -32,15 +32,18 @@ const CalendarPage = () => {
           <InputTitle register={register('title')} />
           <InputDescription register={register('description')} />
           <Flex w="100%" justifyContent="space-between">
-            <Box w="48%">
+            <Box w="30%">
               <SelectState register={register('state')} />
             </Box>
-            <Box w="48%">
+            <Box w="30%">
               <InputDuration register={register('duration')} />
             </Box>
+            <Box w="30%">
+              <SelectTags register={register('tags')} />
+            </Box>
           </Flex>
-          <inputTimes register={register('times')} />
-          <Button colorScheme="blue" mt={4} type="submit" isLoading={isLoading}>Adicionar Tarefa</Button>
+          <InputTimes register={register('times')} />
+          <Button colorScheme="blue" type="submit" mt={4} isLoading={isLoading}>Adicionar Tarefa</Button>
         </VStack>
       </Box>
 

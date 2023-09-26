@@ -1,4 +1,4 @@
-// import { userService } from '@/services/userAPI';
+import { taskService } from '@/services/taskAPI';
 import { UseToastOptions } from "@chakra-ui/react";
 // import { IUserFormData } from '@/types/user';
 
@@ -7,8 +7,7 @@ export const handleTaskRegistration = async (
   toast: (options: UseToastOptions) => void,
 ) => {
   try {
-    console.log(data)
-    // await userService.createUser(data);
+    await taskService.createTasks(data);
     toast({
       title: "Sucesso",
       description: "Tarefa criada com sucesso",
@@ -25,9 +24,4 @@ export const handleTaskRegistration = async (
       isClosable: true,
     });
   }
-};
-
-
-export const addTask = (data: any) => {
-  console.log(data);
 };

@@ -1,6 +1,6 @@
 export { InputTitle } from './inputTitle';
 export { InputDescription } from './inputDescription';
-export { inputTimes } from './inputTimes';
+export { InputTimes } from './inputTimes';
 export { InputDuration } from './inputDuration';
-export { InputTags } from './inputTags';
+export { SelectTags } from './selectTags';
 export { SelectState } from './selectState';

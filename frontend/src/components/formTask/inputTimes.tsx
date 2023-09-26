@@ -1,4 +1,4 @@
-import { FormControl, FormLabel, Input, FormErrorMessage } from "@chakra-ui/react";
+import { FormControl, FormLabel, FormErrorMessage, Input } from "@chakra-ui/react";
 import { UseFormRegisterReturn } from 'react-hook-form';
 
 interface InputProps {
@@ -6,7 +6,7 @@ interface InputProps {
   error?: string;
 }
 
-export const inputTimes: React.FC<InputProps> = ({ register, error }) => (
+export const InputTimes: React.FC<InputProps> = ({ register, error }) => (
   <FormControl id="times" isRequired>
     <FormLabel>Data e hora</FormLabel>
     <Input
@@ -20,3 +20,4 @@ export const inputTimes: React.FC<InputProps> = ({ register, error }) => (
     </FormErrorMessage>
   </FormControl>
 );
+

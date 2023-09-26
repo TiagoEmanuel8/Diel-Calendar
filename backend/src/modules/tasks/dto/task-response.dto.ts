@@ -1,4 +1,4 @@
-export class TaskEntity {
+export class TaskDto {
   id?: number;
   title: string;
   description: string;

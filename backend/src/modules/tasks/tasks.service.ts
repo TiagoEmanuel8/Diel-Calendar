@@ -1,26 +1,42 @@
 import { Injectable } from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
+import { NotFoundError } from 'src/common/errors/types/NotFoundError';
+import { TaskRepository } from './repositories/task.repository';
 
 @Injectable()
 export class TasksService {
-  create(createTaskDto: CreateTaskDto) {
-    return 'This action adds a new task';
+  constructor(private readonly repository: TaskRepository) {}
+
+  async create(createTaskDto: CreateTaskDto) {
+    return await this.repository.create(createTaskDto);
   }
 
-  findAll() {
-    return `This action returns all tasks`;
+  async findAll() {
+    return await this.repository.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} task`;
+  async findOne(id: number) {
+    const task = await this.repository.findOne(id);
+    if (!task) throw new NotFoundError(`Task ${id} is not found`);
+    return task;
   }
 
-  update(id: number, updateTaskDto: UpdateTaskDto) {
-    return `This action updates a #${id} task`;
+  async findTag(tags: string) {
+    const tag = await this.repository.findTags(tags);
+    if (!tag) throw new NotFoundError(`Task ${tags} is not found`);
+    return tag;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} task`;
+  async update(id: number, updateTaskDto: UpdateTaskDto) {
+    const task = await this.repository.findOne(id);
+    if (!task) throw new NotFoundError(`Task ${id} is not found`);
+    return await this.repository.update(id, updateTaskDto);
+  }
+
+  async remove(id: number) {
+    const task = await this.repository.findOne(id);
+    if (!task) throw new NotFoundError(`Task ${id} is not found`);
+    await this.repository.remove(id);
   }
 }

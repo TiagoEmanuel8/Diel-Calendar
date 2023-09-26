@@ -26,13 +26,16 @@ export class UserRepository {
   }
 
   async findAll(): Promise<UserDto[]> {
-    const users = await this.prisma.user.findMany();
+    const users = await this.prisma.user.findMany({
+      include: { tasks: true },
+    });
     return users.map(this.mapUserToDto);
   }
 
   async findOne(id: number): Promise<UserDto> {
     const user = await this.prisma.user.findUnique({
       where: { id },
+      include: { tasks: true },
     });
     if (!user) return null;
     return this.mapUserToDto(user);

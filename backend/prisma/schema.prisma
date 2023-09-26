@@ -12,16 +12,22 @@ datasource db {
 }
 
 model User {
-  id           Int    @id @default(autoincrement())
+  id           Int     @id @default(autoincrement())
   name         String
   email        String
   password     String
-  mobileNumber String @map(name: "mobile_number")
+  mobileNumber String  @map(name: "mobile_number")
+  tasks        Tasks[]
 }
 
-model Task {
+model Tasks {
   id          Int    @id @default(autoincrement())
   title       String
   description String
   state       String
+  duration    String
+  tags        String
+  times       String
+  userId      Int
+  user        User   @relation(fields: [userId], references: [id])
 }

@@ -5,23 +5,18 @@ export class CreateTaskDto {
   @IsString()
   title: string;
 
-  @IsNotEmpty()
   @IsString()
   description: string;
 
-  @IsNotEmpty()
   @IsString()
   state: string;
 
-  @IsNotEmpty()
   @IsString()
   duration: string;
 
-  @IsNotEmpty()
   @IsString()
   tags: string;
 
-  @IsNotEmpty()
   @IsString()
   times: string;
 

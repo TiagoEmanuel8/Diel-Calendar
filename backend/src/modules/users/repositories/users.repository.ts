@@ -15,6 +15,16 @@ export class UserRepository {
       email: user.email,
       name: user.name,
       mobileNumber: user.mobileNumber,
+      tasks: user.tasks.map((task) => ({
+        id: task.id,
+        title: task.title,
+        description: task.description,
+        state: task.state,
+        duration: task.duration,
+        tags: task.tags,
+        times: task.times,
+        userId: task.userId,
+      })),
     };
   }
 

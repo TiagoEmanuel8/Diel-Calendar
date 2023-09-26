@@ -12,7 +12,7 @@ export const InputDuration: React.FC<InputProps> = ({ register, error }) => (
     <Input
       outline='none'
       focusBorderColor='gray.600'
-      placeholder='Digite uma duração para sua tarefa'
+      placeholder='duração para sua tarefa'
       {...register}
     />
     <FormErrorMessage>

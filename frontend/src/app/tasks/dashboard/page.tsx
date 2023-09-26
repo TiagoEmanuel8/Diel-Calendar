@@ -1,5 +1,4 @@
 "use client"
-// src/app/tasks/dashboard/page.tsx
 
 import { Flex, Text, Box, Button, useToast, VStack, Textarea, Select, Input, FormControl, FormLabel } from '@chakra-ui/react';
 import { InputTitle, InputDescription, inputTimes, InputTags, InputDuration, SelectState } from '@/components/formTask';
@@ -37,10 +36,10 @@ const CalendarPage = () => {
               <SelectState register={register('state')} />
             </Box>
             <Box w="48%">
-              <Input placeholder="Duração" type="number" />
-          </Box>
+              <InputDuration register={register('duration')} />
+            </Box>
           </Flex>
-          <Input placeholder="Data e Hora" type="datetime-local" w="100%" />
+          <inputTimes register={register('times')} />
           <Button colorScheme="blue" mt={4} type="submit" isLoading={isLoading}>Adicionar Tarefa</Button>
         </VStack>
       </Box>

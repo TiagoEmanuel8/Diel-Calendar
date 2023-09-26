@@ -10,10 +10,9 @@ export const inputTimes: React.FC<InputProps> = ({ register, error }) => (
   <FormControl id="times" isRequired>
     <FormLabel>Data e hora</FormLabel>
     <Input
-      type='text'
-      outline='none'
-      focusBorderColor='gray.600'
-      placeholder='Digite a data e hora que a tarefa ocorrerá'
+      type="datetime-local"
+      w="100%"
+      placeholder="Data e Hora"
       {...register}
     />
     <FormErrorMessage>

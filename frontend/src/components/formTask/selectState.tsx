@@ -7,7 +7,7 @@ interface InputProps {
 }
 
 export const SelectState: React.FC<InputProps> = ({ register, error }) => (
-  <FormControl id="tags" isRequired>
+  <FormControl id="state" isRequired>
     <FormLabel>Estado</FormLabel>
     <Select
       outline='none'
